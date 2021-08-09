@@ -24,7 +24,6 @@ function App() {
         setTasks(newTasksArray) // new array
         // useState имеет под капотом функцию обновления для перересовки, при изменении
     }
-
     const addTask = (title: string) => {
         const newTask: TaskType = {
             id: v1(),
@@ -33,6 +32,10 @@ function App() {
         }
       setTasks([newTask, ...tasks])
 
+    }
+    const changeTaskStatus = (taskID: string, isDone: boolean) => {
+        const updatedTasks = tasks.map(t => t.id === taskID ? {...t, isDone} : t)
+        setTasks(updatedTasks)
     }
 
     const changeFilter = (filter: FilterValuesType) => {
@@ -50,11 +53,13 @@ function App() {
     return (
         <div className="App">
             <Todolist
+                filer={filter}
                 title="What to learn"
                 tasks={tasksForTodo}
                 removeTask={removeTask}
                 changeFilter={changeFilter}
                 addTask={addTask}
+                changeTaskStatus = {changeTaskStatus}
             />
         </div>
     );

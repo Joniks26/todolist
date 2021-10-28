@@ -18,7 +18,7 @@ function App() {
 
     return (
         <div className="App">
-            <AppBar position="static">
+            <AppBar position="static" color='secondary'>
                 <Toolbar>
                     <IconButton edge="start" color="inherit" aria-label="menu">
                         <Menu/>

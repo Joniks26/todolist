@@ -11,8 +11,10 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import LinearProgress from '@mui/material/LinearProgress';
-import { Menu } from '@mui/icons-material';
+import {Menu} from '@mui/icons-material';
 import { ErrorSnackbar } from '../components/ErrorSnackbar/ErrorSnackbar'
+import {Login} from "../features/login/Login";
+import {Route, Routes} from "react-router-dom"
 
 type PropsType = {
     demo?: boolean
@@ -36,7 +38,10 @@ function App({demo = false}: PropsType) {
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
             <Container fixed>
-                <TodolistsList demo={demo}/>
+                <Routes>
+                <Route path='/' element={<TodolistsList demo={demo}/>}/>
+                <Route path='/login' element={<Login/>}/>
+                </Routes>
             </Container>
         </div>
     )
@@ -45,4 +50,3 @@ function App({demo = false}: PropsType) {
 export default App
 
 
-//30:00

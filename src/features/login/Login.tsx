@@ -8,6 +8,9 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useFormik} from "formik";
+import {loginTC} from "./app-reducer";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 type FormikErrorType = {
     email?: string
@@ -16,6 +19,7 @@ type FormikErrorType = {
 }
 
 export const Login = () => {
+    const dispatch = useDispatch()
 
     const formik = useFormik({
         initialValues: {
@@ -33,16 +37,19 @@ export const Login = () => {
             return errors;
         },
         onSubmit: values => {
-            alert(JSON.stringify(values));
+            dispatch(loginTC(values))
+            formik.resetForm()
         },
     })
 
+    const {isLoggedIn} = useSelector((state : any) => state.auth)
+    const n = useNavigate()
+    if (isLoggedIn) n('/')
 
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>
-            <form onSubmit={() => {
-                formik.handleSubmit()
-                formik.resetForm()
+            <form onSubmit={(e) => {
+                formik.handleSubmit(e)
             }}>
                 <FormControl>
                     <FormLabel>
@@ -69,9 +76,10 @@ export const Login = () => {
                                    value={formik.values.password}
                                    onChange={formik.handleChange}
                         />
-                        <FormControlLabel label={'Remember me'} control={<Checkbox name='rememberME'
-                                                                                   checked={formik.values.rememberMe}
-                                                                                   onChange={formik.handleChange}/>}/>
+                        <FormControlLabel label={'Remember me'}
+                                          control={<Checkbox name='rememberME'
+                                                             checked={formik.values.rememberMe}
+                                                             onChange={formik.handleChange}/>}/>
                         <Button type={'submit'} variant={'contained'} color={'primary'}>
                             Login
                         </Button>

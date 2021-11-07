@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import './App.css'
 import { TodolistsList } from '../features/TodolistsList/TodolistsList'
-import { useSelector } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { AppRootStateType } from './store'
 import { RequestStatusType } from './app-reducer'
 import AppBar from '@mui/material/AppBar';
@@ -15,6 +15,7 @@ import {Menu} from '@mui/icons-material';
 import { ErrorSnackbar } from '../components/ErrorSnackbar/ErrorSnackbar'
 import {Login} from "../features/login/Login";
 import {Route, Routes} from "react-router-dom"
+import {initializeAppTC, logoutTC} from "../features/login/app-reducer";
 
 type PropsType = {
     demo?: boolean
@@ -22,6 +23,15 @@ type PropsType = {
 
 function App({demo = false}: PropsType) {
     const status = useSelector<AppRootStateType, RequestStatusType>((state) => state.app.status)
+    const isInitialized = useSelector<AppRootStateType, boolean>((state) => state.auth.isInitialized)
+    const isLoggedIn = useSelector<AppRootStateType, boolean>((state) => state.auth.isLoggedIn)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(initializeAppTC())},
+        [])
+
+    if(!isInitialized) return <span>load</span>
+
     return (
         <div className="App">
             <ErrorSnackbar/>
@@ -33,7 +43,7 @@ function App({demo = false}: PropsType) {
                     <Typography variant="h6">
                         News
                     </Typography>
-                    <Button color="inherit">Login</Button>
+                    {isLoggedIn && <Button color="inherit" onClick={() => dispatch(logoutTC())}>Log out</Button>}
                 </Toolbar>
                 {status === 'loading' && <LinearProgress/>}
             </AppBar>
@@ -50,3 +60,4 @@ function App({demo = false}: PropsType) {
 export default App
 
 
+//1:57:00

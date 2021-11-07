@@ -36,6 +36,19 @@ export const todolistsAPI = {
     }
 }
 
+export const authAPI = {
+    login(data: any) {
+         return instance.post('auth/login', data);
+    },
+    logout() {
+         return instance.delete('auth/login');
+    },
+    me() {
+        return instance.get(`auth/me`);
+    }
+}
+
+
 // types
 export type TodolistType = {
     id: string
